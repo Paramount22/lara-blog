@@ -28,6 +28,9 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function listPosts()
     {
         return view('posts.listPosts', [
@@ -56,6 +59,7 @@ class PostController extends Controller
      */
     public function store(PostStoreRequest $request)
     {
+        //dd($request->all());
         if ( $request->hasFile('file') ) {
             $image = $request->file('file');
             $name = time().'.'.$image->getClientOriginalExtension();
@@ -69,7 +73,7 @@ class PostController extends Controller
                 'file' => $name
             ]);
 
-          $post->tags()->sync( $request->get('tags') ? : [] );
+          $post->tags()->sync( $request->tags ? : [] );
 
         } else {
             $post =  auth()->user()->posts()->create([
@@ -103,11 +107,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $selected_tags = [];
+        foreach ($post->tags as $post_tag) {
+            array_push($selected_tags, $post_tag->id);
+        }
 
         return view('posts.edit', [
             'post' => $post,
             'categories' => Category::orderBy('name', 'asc')->get(),
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'selected_tags' => $selected_tags
         ]);
     }
 

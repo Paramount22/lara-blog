@@ -10,7 +10,7 @@
                     <form action="{{route('posts.update', $post)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="form-group">
+                      {{--   <div class="form-group">
                             <label class="text-dark" for="category">Select Category</label>
                             <select class="form-control @error('category') is-invalid @enderror" id="category"
                                     name="category">
@@ -25,7 +25,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label class="text-dark" for="title">Title</label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
@@ -84,10 +84,10 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             @foreach($tags as $tag)
-
                                                 <label class="checkbox" for="">{{ $tag->name }}
-                                                    <input class="mr-3" type="checkbox" name="tags[]" value="{{ $tag->id
-                                                     }} ">
+                                                    <input class="mr-3" type="checkbox" name="tags[]"
+                                                           value="{{ $tag->id }}"
+                                                {{in_array($tag->id, $selected_tags) ? 'checked' : ''}}>
                                                 </label>
                                             @endforeach
                                         </div>
